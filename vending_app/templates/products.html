@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+        h1 {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #ff4b2b;
+            color: white;
+        }
+        td {
+            font-size: 16px;
+        }
+        .buy-btn {
+            background-color: #ff4b2b;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .buy-btn:hover {
+            background-color: #ff1e00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Power Twister Vend – Spin & Grab Your Snack!</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Stock Available</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>₹{{ product.price }}</td>
+                <td>{{ product.stock }}</td> <!-- Displays available stock -->
+                <td>
+                    <a href="{% url 'process_transaction' product.id %}" class="buy-btn">Buy</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

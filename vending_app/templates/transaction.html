@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f9; padding: 40px; }
+        h1 { color: white; background: linear-gradient(to right, #007BFF, #00C9FF); padding: 15px; border-radius: 10px; display: inline-block; }
+        form { background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); display: inline-block; text-align: left; margin-top: 20px; }
+        label { font-size: 16px; font-weight: bold; }
+        input { width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:hover { background-color: #218838; }
+        .back-btn { text-decoration: none; background-color: #ff4e50; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 20px; transition: 0.3s; }
+        .back-btn:hover { background-color: #e84347; }
+        .error { color: red; font-weight: bold; }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let quantityInput = document.getElementById("quantity");
+            let totalPriceDisplay = document.getElementById("total_price");
+            let amountPaidInput = document.getElementById("amount_paid");
+
+            let pricePerUnit = parseFloat("{{ product.price }}");
+
+            function updateTotalPrice() {
+                let quantity = parseInt(quantityInput.value) || 1;
+                let totalPrice = (quantity * pricePerUnit).toFixed(2);
+                totalPriceDisplay.innerText = totalPrice;
+                amountPaidInput.value = totalPrice;
+            }
+
+            quantityInput.addEventListener("input", updateTotalPrice);
+            updateTotalPrice();
+        });
+    </script>
+</head>
+<body>
+
+    <h1>💳 Buy {{ product.name }} 💳</h1>
+    <p>Price: <strong>₹{{ product.price|stringformat:".2f" }}</strong></p>
+    <p>Total Price: <strong>₹<span id="total_price">{{ product.price|stringformat:".2f" }}</span></strong></p>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1">
+
+        <label for="amount_paid">Amount Paid:</label>
+        <input type="number" id="amount_paid" name="amount_paid" step="0.01">
+
+        <button type="submit">✅ Pay</button>
+    </form>
+
+    <a href="{% url 'display_products' %}" class="back-btn">⬅️ Back to Products</a>
+
+</body>
+</html>

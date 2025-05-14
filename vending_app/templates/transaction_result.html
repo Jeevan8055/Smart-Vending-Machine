@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-box {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .details {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            background-color: #d9534f;
+        }
+
+        .back-btn:hover {
+            background-color: #c9302c;
+        }
+
+        .print-btn {
+            background-color: #007bff;
+        }
+
+        .print-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the printable receipt */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receipt, #receipt * {
+                visibility: visible;
+            }
+            #receipt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                text-align: center;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-box">🎉 Transaction Successful! 🎉</div>
+
+    <div class="details" id="receipt">
+        <h2>Power Twister Vend - Receipt</h2>
+        <hr>
+        <p><strong>Product:</strong> {{ product.name }}</p>
+        <p><strong>Quantity:</strong> {{ quantity }}</p>
+        <p><strong>Amount Paid:</strong> ₹{{ amount_paid|stringformat:".2f" }}</p>
+        <p><strong>Change Given:</strong> ₹{{ change|stringformat:".2f" }}</p>
+        <p><strong>Date & Time:</strong> {{ transaction_datetime }}</p>
+        <hr>
+        <p>Thank you for your purchase!</p>
+    </div>
+
+    <button class="btn print-btn" onclick="printReceipt()">🖨 Print Receipt</button>
+    <a href="{% url 'display_products' %}" class="btn back-btn">⬅ Back to Products</a>
+
+    <script>
+        function printReceipt() {
+            window.print();
+        }
+    </script>
+
+</body>
+</html>
